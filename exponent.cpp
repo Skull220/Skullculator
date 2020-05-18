@@ -4,6 +4,7 @@
 #include "header.h"
 
 using namespace std;
+
 //calculates the exponent
 double power(double base, int exponent){
     double result = 1;
