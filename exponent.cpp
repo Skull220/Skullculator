@@ -32,9 +32,8 @@ string append(int exponent){
 
 //prints everything out
 void print_pow(double base, int exponent){
-    double result = power(base, exponent);
-    string appendix = append(exponent);
-    cout << base << " raised to the "<< exponent << appendix <<" power is " << result << ".\n";
+    cout << base << " raised to the "<< exponent << append(exponent) 
+        <<" power is " << power(base, exponent) << ".\n";
 }
 
 //asks for information
