@@ -37,7 +37,6 @@ void print_pow(double base, int exponent){
     cout << base << " raised to the "<< exponent << appendix <<" power is " << result << ".\n";
 }
 
-//this is a test comment
 //asks for information
 void exponent(){
     int base, exponent;
