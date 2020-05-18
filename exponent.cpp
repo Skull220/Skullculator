@@ -1,6 +1,7 @@
 #include <iostream>             
 #include <cmath>
 #include <string>
+#include "header.h"
 
 using namespace std;
 //calculates the exponent

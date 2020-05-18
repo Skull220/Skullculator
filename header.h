@@ -4,4 +4,7 @@
 
 using namespace std;
 
+void addition();
 void exponent();
+
+

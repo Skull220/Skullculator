@@ -1,7 +1,7 @@
 #include <iostream> 
 
-#include "exponent.h"
-#include "addition.h"
+#include "header.h"
+
 
 //main function, asks for and recieves input
 int main(){                       

@@ -1,7 +1,7 @@
 #include <iostream>             
 #include <cmath>
 #include <string>
-#include "addition.h"
+#include "header.h"
 
 using namespace std;
 
