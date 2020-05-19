@@ -1,10 +1,4 @@
-#include <iostream>             
-#include <cmath>
-#include <string>
 #include "header.h"
-
-using namespace std;
-
 
 //TODO: Since I wrote these out myself, I need to find a way to handle negatives.
 

@@ -1,9 +1,4 @@
-#include <iostream>             
-#include <cmath>
-#include <string>
 #include "header.h"
-
-using namespace std;
 
 //TODO: Since I wrote these out myself, I need to find a way to handle negatives. 
 //Decimals I'm just gonna have the computer handle since I have no idea how I could write that myself.
@@ -55,5 +50,4 @@ void comparator(int a, int b){
     } else {
         cout << "False." << "\n";
     }
-
 }

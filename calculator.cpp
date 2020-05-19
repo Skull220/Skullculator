@@ -20,22 +20,20 @@ int main(){
                 //Try catch is an ugly fuckin function
                 try{
                     a = stoi(userimp.substr(0, i));
-                    //cout << a << " is what a is.\n";
                 } catch (std::invalid_argument const &e){
-                    //cout << "Error! Skull is an invalid! " << "\n";
                     a = hist;
                 } catch (std::out_of_range const &e){
                     cout << "Error! Skull is out of his range! " << "\n";
                 }
                 try{
                     b = stoi(userimp.substr(i+1, userimp.length())); 
-                    //cout << b << " is what b is. \n";  
                 } catch (std::invalid_argument const &e){
-                    //cout << "Error! Skull is an invalid! " << "\n";
                     b = hist;
                 } catch (std::out_of_range const &e){
                     cout << "Error! Skull is out of his range! " << "\n";
                 }
+                //TODO: Fix the comparison of negative values, which currently attempts to subtract
+                //AND compare
                 switch(userimp[i]){
                     case '+':
                         hist = addition(a,b);
