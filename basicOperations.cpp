@@ -5,27 +5,33 @@
 
 using namespace std;
 
-void addition(int a, int b){
+//TODO: Have all these operations return a value. This way, I can give the calculator multi step equations
+
+int addition(int a, int b){
     cout << (a + b) << ".\n";
+    return (a + b);
 }
 
-void subtraction(int a, int b){
+int subtraction(int a, int b){
     cout << (a - b) << ".\n";
+    return (a - b);
 }
 
-void multiplication(int a, int b){
+int multiplication(int a, int b){
     cout << (a * b) << ".\n";
+    return (a * b);
 }
 
-void division(double a, double b){
+double division(double a, double b){
     cout << (a / b) << ".\n";
+    return (a / b);
 }
 
 void comparator(int a, int b){
     if(a == b){
-        cout << "True!" << ".\n";
+        cout << "True!" << "\n";
     } else {
-        cout << "False." << ".\n";
+        cout << "False." << "\n";
     }
 
 }
