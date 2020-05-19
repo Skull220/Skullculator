@@ -39,18 +39,23 @@ int main(){
                 switch(userimp[i]){
                     case '+':
                         hist = addition(a,b);
+                        cout << hist << ".\n";
                         break;
                     case '-':
                         hist = subtraction(a,b);
+                        cout << hist << ".\n";
                         break;
                     case '*':
                         hist = multiplication(a,b);
+                        cout << hist << ".\n";
                         break;
                     case '/':
                         hist = division(a, b);
+                        cout << hist << ".\n";
                         break;
                     case '^':
                         hist = exponent(a, b);
+                        cout << hist << ".\n";
                         break;
                     case '=':
                         comparator(a, b);
