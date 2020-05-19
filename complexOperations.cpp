@@ -5,16 +5,14 @@
 
 using namespace std;
 
-//calculates the exponent
-double power(double base, int exponent){
-    double result = 1;
-    if (exponent == 0) return 1;
-    for(int i = 0; i < exponent; i++) result *= base;
-    return result;
-}
 
-//asks for information
+//TODO: Since I wrote these out myself, I need to find a way to handle negatives.
+
+//calculates, prints, and returns the result. I could use a built in function but I want to do this myself
 int exponent(int base, int exponent){
-    cout << power(base, exponent) << ".\n";
-    return(power(base, exponent));
+    double result = 1;
+    if (exponent != 0){ 
+        for(int i = 0; i < exponent; i++) result *= base;
+    }
+    return result;
 }
