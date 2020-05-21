@@ -12,6 +12,7 @@
 3) Fix the history so that if the user opts to quick add or quick subtract, 
    it'll show the left/right value (calculator, history)   
 4) Find a better way to handle history so I can 'bump up' the list and replace oldest value with newest (history)
+5) Add decimal support
 */
 
 /*Some might call this bad practice 
