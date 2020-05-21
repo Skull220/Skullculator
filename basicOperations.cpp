@@ -1,8 +1,5 @@
 #include "header.h"
 
-/* TODO: Since I wrote these out myself, I need to find a way to handle negatives. 
-Decimals I'm just gonna have the computer handle since I have no idea how I could write that myself. */
-
 //wrote these out manually as well
 int addition(int first_term, int second_term){
     int result = first_term;
