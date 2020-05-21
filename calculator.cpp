@@ -3,8 +3,6 @@
 //constructs history class 'hist'
 history hist = history();
 
-
-
 //Assigns values to be used by the calculator. See below.
 double assigner(string input, int index, int type, int previous_value){
     double value;
@@ -45,21 +43,16 @@ double complex_operation_switch(int previous_value, string input, int i){
         case 'h':
             //There's got to be a better way...
             if(tolower(input[i+1]) == 'i' && tolower(input[i+2]) == 's' && tolower(input[i+3]) == 't') previous_value = hist.display_history();
-            
-            else if(tolower(input[i+1]) == 'e' && tolower(input[i+2]) == 'l' && tolower(input[i+3]) == 'p'){
-                hist.help_menu();
-            }
+            else if(tolower(input[i+1]) == 'e' && tolower(input[i+2]) == 'l' && tolower(input[i+3]) == 'p') hist.help_menu();
             break;
-        case 'r':
-            
+        case 'r':            
             if(tolower(input[i+1]) == 'o' && tolower(input[i+2]) == 'o' && tolower(input[i+3]) == 't'){
-                hist.commit_to_history(input);
-                int radicand;
-                int index;      
-                index = assigner(input, i, 2, previous_value);
-                radicand = assigner(input, i, 3, previous_value);
+                hist.commit_to_history(input);                   
+                int index = assigner(input, i, 2, previous_value);
+                int radicand = assigner(input, i, 3, previous_value);
                 previous_value = take_root(index, radicand);
-                cout << previous_value << ".\n";
+                if (previous_value == -1) cout << "Error! Imaginary value!" "\n";
+                else cout << previous_value << ".\n";
             } 
             break;
     }
@@ -100,35 +93,37 @@ double standard_operation_switch(double previous_value, char input, int first_nu
 
 //This searches the entire input for some kind of operator
 double operator_finder(string input, double previous_value){
+    string operator_list = "+-*/^=hr&";
     for (int i = 0; i < input.length(); i++){
-        //if a valid operator is found, the calculator commits the equation to history and gets to work
-        //This is just as ugly as the equivalent if statement, but at least I don't feel like yanderedev
+        bool breaker = false;
+        /*if a valid operator is found, the calculator commits the equation to history and gets to work
+        This is just as ugly as the equivalent if statement, but at least I don't feel like yanderedev*/
         switch(tolower(input[i])){
-            /*Everything below is fucking revolting.
-            It all works, but it should be changed as soon as possible*/
-            case '-':                
+            case '-':
+                /*This is how I handle leading negatives.
+                If - is the first value, check and see if any of the values proceeding are an operator. 
+                If so, break. */
+                if (i == 0){
+                    for (int j = 2; j < input.length(); j++){
+                        for(int k = 0; k < operator_list.length(); k++){
+                            if (input[j] == operator_list[k]){
+                                breaker = true;
+                            }
+                        }
+                    }
+                }
+                if(breaker){
+                    break;
+                }  
             case '+':
             case '*':
             case '/':
             case '^':
             case '=':
-                /*I have to assign these on different lines than where I initialize them.
-                the compiler is a small child and will scream and cry
-                and shit its pants unless I do so*/
-                int index_of_operator;
-                index_of_operator = i;
-                //If negative is caught, this verifies there are no other operators. I think. 
-                for (int j = 0; j < input.length(); j++){
-                    if(input[j] == '+' || input[j] == '*' || input[j] == '/' 
-                    || input[j] == '^' || input[j] == '=') index_of_operator = j; 
-                }
                 hist.commit_to_history(input);
-                //Ditto, see two comments above
-                int first_number;
-                int second_number;
-                first_number = assigner(input, index_of_operator, 0, previous_value);
-                second_number = assigner(input, index_of_operator, 1, previous_value);
-                previous_value = standard_operation_switch(previous_value, input[index_of_operator], first_number, second_number);
+                previous_value = standard_operation_switch(previous_value, input[i], 
+                    assigner(input, i, 0, previous_value), assigner(input, i, 1, previous_value));
+                return previous_value;
                 /*side note: I honest to god had a near panic attack 
                 because I thought the previous value function completely stopped working. 
                 Lo and behold I just forgot to put a fucking break*/
@@ -136,6 +131,7 @@ double operator_finder(string input, double previous_value){
             case 'h':
             case 'r':
                 previous_value = complex_operation_switch(previous_value, input, i);
+                return previous_value;
                 break;
             /* This is just so I can exit the loop,
             because the terminal doesn't have a big red x button. I'll comment this 
@@ -154,7 +150,7 @@ int main(){
     double previous_value = 0;
     string input_unstripped;
     cout << "Skullculator V1.0" << "\n";
-    while(true){
+    while(previous_value != INT_MAX){
         cout << "." << "\n" << "." << "\n";
         cout << "Please enter an equation or type 'help' to view available list: " << "\n";
         getline(cin, input_unstripped);
