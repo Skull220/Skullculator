@@ -1,20 +1,27 @@
 #include "header.h"
 
+//Fills the history list with blanks and sets the index to zero.
 void history::clear_history(){
-        for (int i = 0; i < 20; i++) history_list[i] = "";
-        int history_slot = 0;
-    }
+    for (int i = 0; i < 20; i++) history_list[i] = "";
+    history_slot = 0;
+}
+
+/*Adds the previous calculation to the history list.
+If the list is full it'll clear it before doing so.*/
 void history::commit_to_history(string input){
-    if(history_slot > 20) clear_history();    
-    history_list[history_slot] = input;
+    if(history_slot >= 20) clear_history();    
+    history_list[history_slot] = to_string(history_slot + 1) + ")" + input;
     history_slot++; 
 }
+
+//prints out the history, skipping blanks
 double history::display_history(){
     cout << "User history (Last 20 inputs):" << "\n";
     for(int i = 0; i < 20; i++) if(!(history_list[i] == "")) cout << history_list[i] << ".\n";
     return 0;
 }
 
+//prints the help menu. I just put it here because it looks cleaner and fuck you it's my code
 void history::help_menu(){
     cout << "Available operations:" << "\n";
     cout << "+    || Add two values                      || type as: x + y" << "\n";
