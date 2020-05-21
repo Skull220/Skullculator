@@ -1,11 +1,32 @@
 #include "header.h"
 
+//constructs history class 'hist'
 history hist = history();
 
-/*TODO: 
--Make it so the user can input a negative value as part of an equation and have it parse properly
-Some say this is the 13th labor of hercules 
-*/
+
+
+//Assigns values to be used by the calculator. See below.
+double assigner(string input, int index, int type, int previous_value){
+    double value;
+    if (type == 0 || type == 2){
+        /*Try catch is still an ugly function. 
+        Half the reason I wrote this method is so I wouldn't need to look at it unless I needed to.*/
+        try{
+            value = stoi(input.substr(0, index));
+        } catch (std::invalid_argument const &e){
+            if (type == 2) value = 2;
+            else value = previous_value; 
+        }
+    } else {
+        try{
+            if (type == 1) value = stoi(input.substr(index+1, input.length())); 
+            else value = stoi(input.substr(index+4, input.length()));
+        } catch (std::invalid_argument const &e){
+            value = previous_value;
+        }  
+    }
+    return value;
+}
 
 //clears whitespace from user input so spaces won't break the machine
 string stripper(string unstripped){
@@ -20,37 +41,23 @@ string stripper(string unstripped){
 /*See below. The only difference is that, true to the name, this one handles complex inputs. 
 Those require more than one letter, so it first verifies that the input is valid.*/
 double complex_operation_switch(int previous_value, string input, int i){
-
-    switch(input[i]){
+    switch(tolower(input[i])){
         case 'h':
             //There's got to be a better way...
-            if(input[i+1] == 'i' && input[i+2] == 's' && input[i+3] == 't') previous_value = hist.display_history();
-            else if(input[i+1] == 'e' && input[i+2] == 'l' && input[i+3] == 'p'){
+            if(tolower(input[i+1]) == 'i' && tolower(input[i+2]) == 's' && tolower(input[i+3]) == 't') previous_value = hist.display_history();
+            
+            else if(tolower(input[i+1]) == 'e' && tolower(input[i+2]) == 'l' && tolower(input[i+3]) == 'p'){
                 hist.help_menu();
             }
             break;
         case 'r':
-            if(input[i+1] == 'o' && input[i+2] == 'o' && input[i+3] == 't'){
+            
+            if(tolower(input[i+1]) == 'o' && tolower(input[i+2]) == 'o' && tolower(input[i+3]) == 't'){
+                hist.commit_to_history(input);
                 int radicand;
-                int index;
-                /*A lot of this is copy and pasted but there are also just enough differences
-                between this one and the one below that I think it's justified. I can probably make it
-                a function if I try hard enough.*/                
-                try{
-                    index = stoi(input.substr(0, i));
-                } catch (std::invalid_argument const &e){
-                    //index defaults to 2 because it's a root problem
-                    index = 2;
-                } catch (std::out_of_range const &e){
-                    cout << "Error! Skull is out of his range! " << "\n";
-                }
-                try{
-                    radicand = stoi(input.substr(i+4, input.length())); 
-                } catch (std::invalid_argument const &e){
-                    radicand = previous_value;
-                } catch (std::out_of_range const &e){
-                    cout << "Error! Skull is out of his range! " << "\n";
-                }
+                int index;      
+                index = assigner(input, i, 2, previous_value);
+                radicand = assigner(input, i, 3, previous_value);
                 previous_value = take_root(index, radicand);
                 cout << previous_value << ".\n";
             } 
@@ -95,36 +102,33 @@ double standard_operation_switch(double previous_value, char input, int first_nu
 double operator_finder(string input, double previous_value){
     for (int i = 0; i < input.length(); i++){
         //if a valid operator is found, the calculator commits the equation to history and gets to work
-        //actually, this is just as ugly as the if statement, but at least I don't feel like yanderedev
-        switch(input[i]){
+        //This is just as ugly as the equivalent if statement, but at least I don't feel like yanderedev
+        switch(tolower(input[i])){
+            /*Everything below is fucking revolting.
+            It all works, but it should be changed as soon as possible*/
+            case '-':                
             case '+':
-            case '-':
             case '*':
             case '/':
             case '^':
             case '=':
+                /*I have to assign these on different lines than where I initialize them.
+                the compiler is a small child and will scream and cry
+                and shit its pants unless I do so*/
+                int index_of_operator;
+                index_of_operator = i;
+                //If negative is caught, this verifies there are no other operators. I think. 
+                for (int j = 0; j < input.length(); j++){
+                    if(input[j] == '+' || input[j] == '*' || input[j] == '/' 
+                    || input[j] == '^' || input[j] == '=') index_of_operator = j; 
+                }
                 hist.commit_to_history(input);
+                //Ditto, see two comments above
                 int first_number;
                 int second_number;
-                /*Tries to assign the left and right sides of the operator as integers.
-                If it can't, it will assign the value in history (default 0). I think there might be
-                SOME way to have these both in the same try catch, but there also might not be.
-                side note: Try catch is an ugly fuckin function */
-                try{
-                    first_number = stoi(input.substr(0, i));
-                } catch (std::invalid_argument const &e){
-                    first_number = previous_value;
-                } catch (std::out_of_range const &e){
-                    cout << "Error! Skull is out of his range! " << "\n";
-                }
-                try{
-                    second_number = stoi(input.substr(i+1, input.length())); 
-                } catch (std::invalid_argument const &e){
-                    second_number = previous_value;
-                } catch (std::out_of_range const &e){
-                    cout << "Error! Skull is out of his range! " << "\n";
-                }
-                previous_value = standard_operation_switch(previous_value, input[i], first_number, second_number);
+                first_number = assigner(input, index_of_operator, 0, previous_value);
+                second_number = assigner(input, index_of_operator, 1, previous_value);
+                previous_value = standard_operation_switch(previous_value, input[index_of_operator], first_number, second_number);
                 /*side note: I honest to god had a near panic attack 
                 because I thought the previous value function completely stopped working. 
                 Lo and behold I just forgot to put a fucking break*/
@@ -149,7 +153,7 @@ int main(){
     hist.clear_history();
     double previous_value = 0;
     string input_unstripped;
-    cout << "Skull Calculator V1.0" << "\n";
+    cout << "Skullculator V1.0" << "\n";
     while(true){
         cout << "." << "\n" << "." << "\n";
         cout << "Please enter an equation or type 'help' to view available list: " << "\n";
