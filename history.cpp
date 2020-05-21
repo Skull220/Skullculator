@@ -36,6 +36,4 @@ void history::help_menu(){
     cout << "&    || Force quit the program              || type as: &" << "\n";
     cout << "NOTE: Typing any equation without an x, y, or n value will substitute the missing value(s)"<< "\n";
     cout << "with the result of the previous operation (default 0)." << "\n";
-
 }
-
