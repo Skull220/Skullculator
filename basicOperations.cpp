@@ -26,7 +26,6 @@ int addition(int first_term, int second_term){
     return result;
 }
 
-//-9--3 returned -12, should have returned -6
 int subtraction(int first_term, int second_term){
     //cout << "first term is: " << first_term << ". Second term is: " << second_term << ".\n";
     int result = first_term;
