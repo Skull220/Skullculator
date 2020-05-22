@@ -149,7 +149,7 @@ int main(){
     hist.clear_history();
     double previous_value = 0;
     string input_unstripped;
-    cout << "Skullculator V0.5" << "\n";
+    cout << "Skullculator v1.0" << "\n";
     while(previous_value != INT_MAX){
         cout << "." << "\n" << "." << "\n";
         cout << "Please enter an equation or type 'help' to view available list: " << "\n";
