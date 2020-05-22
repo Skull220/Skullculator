@@ -14,7 +14,6 @@ double exponent(int base, int exponent){
 /* For now I'm just going to use a built in function.
 If I ever decide one day that I am a failure of a human being and I deserve nothing but endless suffering,
 I'll write this process manually. .*/
-
 double take_root(double index, double radicand){
     if (radicand < 0){
         return -1;

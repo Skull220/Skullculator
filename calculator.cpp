@@ -3,7 +3,7 @@
 //constructs history class 'hist'
 history hist = history();
 
-//Assigns values to be used by the calculator. See below.
+//Assigns values to be used by the calculator. 
 double assigner(string input, int index, int type, int previous_value){
     double value;
     if (type == 0 || type == 2){
@@ -11,15 +11,15 @@ double assigner(string input, int index, int type, int previous_value){
         Half the reason I wrote this method is so I wouldn't need to look at it unless I needed to.*/
         try{
             value = stoi(input.substr(0, index));
-        } catch (std::invalid_argument const &e){
+        } catch (invalid_argument const &e){
             if (type == 2) value = 2;
-            else value = previous_value; 
+            else value = previous_value;
         }
     } else {
         try{
-            if (type == 1) value = stoi(input.substr(index+1, input.length())); 
+            if (type == 1) value = stoi(input.substr(index+1, input.length()));
             else value = stoi(input.substr(index+4, input.length()));
-        } catch (std::invalid_argument const &e){
+        } catch (invalid_argument const &e){
             value = previous_value;
         }  
     }
@@ -33,27 +33,29 @@ string stripper(string unstripped){
     for (int i = 0; i < head; i++){
         if(unstripped[i] != ' ') stripped += unstripped[i];
     }
-    return stripped;    
+    return stripped; 
 } 
 
 /*See below. The only difference is that, true to the name, this one handles complex inputs. 
-Those require more than one letter, so it first verifies that the input is valid.*/
+Those require more than one letter, so it first verifies that the input is valid.
+To be honest, there's probably a much better way to do this.*/
 double complex_operation_switch(int previous_value, string input, int i){
     switch(tolower(input[i])){
         case 'h':
-            //There's got to be a better way...
-            if(tolower(input[i+1]) == 'i' && tolower(input[i+2]) == 's' && tolower(input[i+3]) == 't') previous_value = hist.display_history();
-            else if(tolower(input[i+1]) == 'e' && tolower(input[i+2]) == 'l' && tolower(input[i+3]) == 'p') hist.help_menu();
+            if(input.substr(i+1, 3) == "ist") previous_value = hist.display_history();
+            else if(input.substr(i+1, 3) == "elp") hist.help_menu();
             break;
-        case 'r':            
-            if(tolower(input[i+1]) == 'o' && tolower(input[i+2]) == 'o' && tolower(input[i+3]) == 't'){
-                hist.commit_to_history(input);                   
+        case 'r':
+            //Side note: C++ substrings are different from java ones.
+            //They don't go from x to y, they go from x and read to the length of y. 
+            if(input.substr(i+1, 3) == "oot"){
+                hist.commit_to_history(input);
                 int index = assigner(input, i, 2, previous_value);
                 int radicand = assigner(input, i, 3, previous_value);
                 previous_value = take_root(index, radicand);
                 if (previous_value == -1) cout << "Error! Imaginary value!" "\n";
                 else cout << previous_value << ".\n";
-            } 
+            }
             break;
     }
     return previous_value;
@@ -61,7 +63,8 @@ double complex_operation_switch(int previous_value, string input, int i){
 
 /*Reads for a SPECIFIC operator and runs the appropriate function. 
 The functions have return types so the result
-can be used as a temporary history value. */
+can be used as a temporary history value.
+I should probably reduce the number of arguments I'm passing here, at least if I can.*/
 double standard_operation_switch(double previous_value, char input, int first_number, int second_number){
     switch(input){
         case '+':
@@ -94,7 +97,7 @@ double standard_operation_switch(double previous_value, char input, int first_nu
     return previous_value;
 }
 
-//This searches the entire input for some kind of operator
+//This searches the entire input for some kind of operator.
 double operator_finder(string input, double previous_value){
     string operator_list = "+-*/^=hr&";
     for (int i = 0; i < input.length(); i++){
@@ -137,17 +140,17 @@ double operator_finder(string input, double previous_value){
                 return previous_value;
                 break;
             /* This is just so I can exit the loop,
-            because the terminal doesn't have a big red x button. I'll comment this 
-            out for release. This is an absolute hack but if it works, it works. 
+            because the terminal doesn't have a big red x button. I'll comment this
+            out for release. This is an absolute hack but if it works, it works. */
             case '&':
-                return INT_MAX;    
-                break;*/
+                return INT_MAX;
+                break;
         }
     }
     return previous_value;
 }
 
-//main function, asks for and recieves input.
+//Main function, asks for and recieves input. 
 int main(){ 
     hist.clear_history();
     double previous_value = 0;
