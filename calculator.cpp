@@ -135,10 +135,10 @@ double operator_finder(string input, double previous_value){
                 break;
             /* This is just so I can exit the loop,
             because the terminal doesn't have a big red x button. I'll comment this 
-            out for release. This is an absolute hack but if it works, it works. */
+            out for release. This is an absolute hack but if it works, it works. 
             case '&':
                 return INT_MAX;    
-                break;
+                break;*/
         }
     }
     return previous_value;
