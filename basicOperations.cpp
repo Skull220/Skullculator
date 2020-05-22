@@ -52,6 +52,8 @@ double division(double dividend, double divisor){
     dividend = abs(dividend);
     divisor = abs(divisor);
     double result = 0;
+    if(divisor == 0) return INT_MIN;
+    if (dividend == 0) return 0;
     while(dividend > divisor-1){
         dividend -= divisor;
         result++;

@@ -78,7 +78,10 @@ double standard_operation_switch(double previous_value, char input, int first_nu
             break;
         case '/':
             previous_value = division(first_number, second_number);
-            cout << previous_value << ".\n";
+            if(previous_value == INT_MIN){ 
+                cout << "Error: Undefined! Cannot Divide by Zero!" << "\n";
+                previous_value = 0;
+            } else cout << previous_value << ".\n";
             break;
         case '^':
             previous_value = exponent(first_number, second_number);
